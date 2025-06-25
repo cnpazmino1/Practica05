@@ -1,6 +1,10 @@
 from datetime import datetime
 from typing import List, Dict
 
+class MontoInvalidoError(Exception):
+    """Excepción personalizada ."""
+    pass
+
 class LibroDiario:
     """Gestión contable básica de ingresos y egresos."""
 
@@ -9,8 +13,18 @@ class LibroDiario:
 
     def agregar_transaccion(self, fecha: str, descripcion: str, monto: float, tipo: str) -> None:
         """Agrega una transacción al libro diario."""
+        tipo = tipo.lower()
         if tipo not in ("ingreso", "egreso"):
-            raise ValueError("Tipo de transacción inválido. Use 'ingreso' o 'egreso'.")
+            raise ValueError(f"Tipo de transacción inválido ({tipo}). Use 'ingreso' o 'egreso'.")
+        
+        try:
+            obj_fecha= datetime.strptime(fecha, "%d/%m/%Y")
+        except Exception as e:
+            raise ValueError(f" Formato de fecha invalida({fecha}). use 'dd/mm/yyyy'.")
+
+        if monto < 0:
+            raise ValueError(f" monto invalido({monto}). el monto debe ser mayor a 0 .")
+
 
         transaccion = {
             "fecha": datetime.strptime(fecha, "%d/%m/%Y"),
