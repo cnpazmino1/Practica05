@@ -27,3 +27,6 @@ Thumbs.db
 # Carpetas de pruebas o temporales
 *.bak
 *.tmp
+
+# archivos log
+*.log
